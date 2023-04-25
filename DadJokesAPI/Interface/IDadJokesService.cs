@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace DadJokesAPI.Interface
 {
-     public interface IDadJokesService
+    /// <summary>
+    /// Interface for DadJokesService
+    /// </summary>
+    public interface IDadJokesService
     {
         public Task<ActionResult<string>> GetRandomJokeAsync();
         public  Task<ActionResult<string>> GetJokeCount();

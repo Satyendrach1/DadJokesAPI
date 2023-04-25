@@ -11,45 +11,34 @@ namespace DadJokesAPI.Service
     public class DadJokesService : IDadJokesService
     {
         private readonly HttpClient client = new();
+        //Injecting HttpClientFactory at constuctor level
+        private IHttpClientFactory _httpClient;
+        public DadJokesService(IHttpClientFactory httpClient)
+        {
+            _httpClient = httpClient;
+            client = _httpClient.CreateClient("dadjokes");
+        }
+        /// <summary>
+        /// Get Randon jokes from the API
+        /// </summary>
+        /// <returns>Jokes response</returns>
         public async Task<ActionResult<string>> GetRandomJokeAsync()
         {
-           
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("https://dad-jokes.p.rapidapi.com/random/joke"),
-                Headers =
-                {
-                    { "X-RapidAPI-Key", "bf5752567cmsh185432ff06c85f9p1939f5jsnbf313662b3b5" },
-                    { "X-RapidAPI-Host", "dad-jokes.p.rapidapi.com" },
-                },
-            };
-            using (var response = await client.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-                return body;
-            }
+            var response = await client.GetAsync("random/joke");
+            response.EnsureSuccessStatusCode();
+            var body = await response.Content.ReadAsStringAsync();
+            return body;
         }
-
+        /// <summary>
+        /// Get jokes Count from the API
+        /// </summary>
+        /// <returns>Joke Count</returns>
         public async Task<ActionResult<string>> GetJokeCount()
         {
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("https://dad-jokes.p.rapidapi.com/joke/count"),
-                Headers =
-                {
-                    { "X-RapidAPI-Key", "bf5752567cmsh185432ff06c85f9p1939f5jsnbf313662b3b5" },
-                    { "X-RapidAPI-Host", "dad-jokes.p.rapidapi.com" },
-                },
-            };
-            using (var response = await client.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-                return body;
-            }
+            var response = await client.GetAsync("joke/count");
+            response.EnsureSuccessStatusCode();
+            var body = await response.Content.ReadAsStringAsync();
+            return body;
         }
     }
 }

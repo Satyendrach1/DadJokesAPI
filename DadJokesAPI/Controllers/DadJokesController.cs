@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DadJokesAPI.Interface;
+using Microsoft.Extensions.Logging;
 
 namespace DadJokesAPI.Controllers
 {
@@ -21,7 +22,7 @@ namespace DadJokesAPI.Controllers
         [HttpGet]
         public Task<ActionResult<string>> GetRandomJokeAsync()
         {
-            return  _dadJokesService.GetRandomJokeAsync();
+            return _dadJokesService.GetRandomJokeAsync();
         }
         [HttpGet]
         public Task<ActionResult<string>> GetJokeCount()

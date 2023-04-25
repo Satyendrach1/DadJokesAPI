@@ -1,4 +1,5 @@
 using DadJokesAPI.Interface;
+using DadJokesAPI.Middleware;
 using DadJokesAPI.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +36,16 @@ namespace DadJokesAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DadJokesAPI", Version = "v1" });
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
+            //Adding Typed HttpClient 
+            services.AddHttpClient("dadjokes", client =>
+             {
+                 client.BaseAddress = new Uri(this.Configuration.GetSection("AppSettings")["url"]);
+                 client.DefaultRequestHeaders.Add("X-RapidAPI-Key", "bf5752567cmsh185432ff06c85f9p1939f5jsnbf313662b3b5");
+                 client.DefaultRequestHeaders.Add("X-RapidAPI-Host", "dad-jokes.p.rapidapi.com");
+             });
+            //Global Exception service
+            services.AddTransient<ExceptionMiddleware>();
+            //Dad Jokes service
             services.AddTransient<IDadJokesService, DadJokesService>();
         }
 
@@ -58,7 +69,7 @@ namespace DadJokesAPI
             .AllowAnyHeader());
 
             app.UseAuthorization();
-
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
