@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using DadJokesAPI.Interface;
 using Microsoft.Extensions.Logging;
-
+using DadJokesAPI.Models;
 namespace DadJokesAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -20,7 +20,7 @@ namespace DadJokesAPI.Controllers
             _dadJokesService = dadJokesService;
         }
         [HttpGet]
-        public Task<ActionResult<string>> GetRandomJokeAsync()
+        public Task<ActionResult<DadJokeResponse>> GetRandomJokeAsync()
         {
             return _dadJokesService.GetRandomJokeAsync();
         }

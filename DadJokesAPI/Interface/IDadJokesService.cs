@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DadJokesAPI.Models;
 
 namespace DadJokesAPI.Interface
 {
@@ -11,7 +12,7 @@ namespace DadJokesAPI.Interface
     /// </summary>
     public interface IDadJokesService
     {
-        public Task<ActionResult<string>> GetRandomJokeAsync();
+        public Task<ActionResult<DadJokeResponse>> GetRandomJokeAsync();
         public  Task<ActionResult<string>> GetJokeCount();
     }
 }
